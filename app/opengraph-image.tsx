@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const dynamic = "force-static";
@@ -9,7 +11,10 @@ export const size = {
 };
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  const logo = await readFile(join(process.cwd(), "public/logo-mark.png"));
+  const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -38,6 +43,7 @@ export default function OpenGraphImage() {
             width: "340px",
           }}
         />
+        <img src={logoSrc} alt="" width={110} height={110} style={{ marginBottom: 20, marginTop: -40 }} />
         <div
           style={{
             color: "#a1a1aa",
@@ -50,10 +56,10 @@ export default function OpenGraphImage() {
         >
           Software Engineer
         </div>
-        <div style={{ display: "flex", fontSize: 104, fontWeight: 700, letterSpacing: "-0.06em" }}>
+        <div style={{ display: "flex", fontSize: 88, fontWeight: 700, letterSpacing: "-0.06em" }}>
           Moiz<span style={{ color: "#a5f3fc" }}>.</span>
         </div>
-        <div style={{ color: "#d4d4d8", display: "flex", fontSize: 44, marginTop: 20 }}>
+        <div style={{ color: "#d4d4d8", display: "flex", fontSize: 40, marginTop: 12 }}>
           Building thoughtful digital experiences
         </div>
         <div
